@@ -17,3 +17,25 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.primary {
+  color: $primary;
+}
+.secondary{
+  color: $secondary;
+}
+.primary-button {
+  border: 1 px solid $primary;
+  background: $primary;
+  @apply text-white rounded-md py-3 px-7 font-semibold shadow-md focus:outline-none;
+}
+
+.inset-button {
+  background: $secondary-light;
+  border: 1px solid $primary;
+  @apply h-full m-0 py-2 px-5 rounded-lg text-white font-bold;
+}
+
+button{
+  @apply focus:outline-none outline-none;
+}
