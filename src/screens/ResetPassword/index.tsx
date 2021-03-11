@@ -1,7 +1,17 @@
-import { ChangeEvent, FC } from "react";
+import { ChangeEvent, FC, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Action } from "redux";
+import { ThunkDispatch } from "redux-thunk";
 import Layout from "../../components/Layout";
+import changePasswordThunk from "../../redux-thunk/auth/thunk/changePasswordThunk";
 
 const ResetPasswordScreen = () => {
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const dispatch = useDispatch<
+    ThunkDispatch<RootState, ExtraThunkArguments, Action<any>>
+  >();
+
   return (
     <Layout>
       <div className="w-full flex py-60 justify-center items-center">
@@ -13,19 +23,40 @@ const ResetPasswordScreen = () => {
           </p>
           <Input
             label="New Password"
-            value=""
-            onChange={(value) => console.log(value)}
+            value={password}
+            onChange={setPassword}
             placeholder="Enter your email"
             type="text"
           />
           <Input
             label="Confirm New Password"
-            value=""
-            onChange={(value) => console.log(value)}
+            value={confirmPassword}
+            onChange={setConfirmPassword}
             placeholder="Enter your email"
             type="text"
           />
-          <button className="primary-button">Reset</button>
+          <button
+            className="primary-button"
+            onClick={() => {
+              const token =
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hbmlzaGVrYW5lamFAZ21haWwuY29tIiwiaWF0IjoxNjE1NDkzMTEwLCJleHAiOjE2MTU0OTY3MTB9.yaQ-hM_hOIbqptF-fbgDZvLDjWhsiOKoAC2p0ZCfqfk";
+              dispatch(
+                changePasswordThunk({
+                  confirmPassword,
+                  password,
+                  token,
+                })
+              )
+                .then((data: any) => {
+                  console.log({ data });
+                })
+                .catch((error: any) => {
+                  console.log(error);
+                });
+            }}
+          >
+            Reset
+          </button>
         </div>
       </div>
     </Layout>

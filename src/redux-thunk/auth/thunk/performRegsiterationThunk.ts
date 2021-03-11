@@ -18,21 +18,21 @@ function performRegsiterationThunk({
   skills: string;
 }): CustomThunk<any> {
   return async (dispatchThunk, getStates, { endPointBase }) => {
-    if (userRole != 0 && userRole != 1) {
+    if (userRole !== 0 && userRole !== 1) {
       throw new Error("Invalid User Role");
     }
-    const { data } = await Axios.post<unknown, AxiosResponse<ApiResponse<User>>>(
-      `${endPointBase}${EndpointConstants.auth.login}`,
-      {
-        name,
-        email,
-        password,
-        confirmPassword,
-        skills,
-        userRole,
-      }
-    );
-    if (!data.success ) {
+    const { data } = await Axios.post<
+      unknown,
+      AxiosResponse<ApiResponse<User>>
+    >(`${endPointBase}${EndpointConstants.auth.register}`, {
+      name,
+      email,
+      password,
+      confirmPassword,
+      skills,
+      userRole,
+    });
+    if (!data.success) {
       throw new Error(data.message);
     }
     return data;

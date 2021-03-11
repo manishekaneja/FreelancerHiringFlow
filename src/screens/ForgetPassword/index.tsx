@@ -1,9 +1,19 @@
-import { ChangeEvent, FC } from "react";
+import { ChangeEvent, FC, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { Action } from "redux";
+import { ThunkDispatch } from "redux-thunk";
 import Layout from "../../components/Layout";
+import getResetPasswordTokenThunk from "../../redux-thunk/auth/thunk/getResetPasswordTokenThunk";
 import RouteConstant from "../../utils/RouteConstant";
 
 const ForgotPasswordScreen = () => {
+  const [email, setEmail] = useState("");
+
+  const dispatch = useDispatch<
+    ThunkDispatch<RootState, ExtraThunkArguments, Action<any>>
+  >();
+
   return (
     <Layout>
       <div className="w-full flex py-60 justify-center items-center">
@@ -14,22 +24,39 @@ const ForgotPasswordScreen = () => {
             Enter the email associated with your account and we’ll send you
             instructions to reset your password.
           </p>
-        <Input
-          label="Email Address*"
-          value=""
-          onChange={(value) => console.log(value)}
-          placeholder="Enter your email"
-          type="text"
+          <Input
+            label="Email Address*"
+            value={email}
+            onChange={setEmail}
+            placeholder="Enter your email"
+            type="text"
           />
 
-        <button className="primary-button">Signup</button>
-        <p>
-          Have an account?
-          <Link to={RouteConstant.login} className="primary">
-            Login
-          </Link>
-        </p>
-          </div>
+          <button
+            className="primary-button"
+            onClick={() =>
+              dispatch(
+                getResetPasswordTokenThunk({
+                  email: email,
+                })
+              )
+                .then((data) => {
+                  console.log({ data });
+                })
+                .catch((err) => {
+                  console.log(err);
+                })
+            }
+          >
+            Send Mail
+          </button>
+          <p>
+            Have an account?
+            <Link to={RouteConstant.login} className="primary">
+              Login
+            </Link>
+          </p>
+        </div>
       </div>
     </Layout>
   );

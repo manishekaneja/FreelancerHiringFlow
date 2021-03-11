@@ -1,4 +1,4 @@
-import { CustomAction, Job, User } from "../type";
+import { CustomAction, Job } from "../type";
 
 type ReducerStateType$job = {
   jobList: Job[];
@@ -21,5 +21,4 @@ function reducer$job(
   }
 }
 
-
-export {reducer$job}
+export { reducer$job };

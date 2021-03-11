@@ -6,6 +6,7 @@ import ForgotPasswordScreen from "./ForgetPassword";
 import HomeScreen from "./Home";
 import LoginScreen from "./Login";
 import RegisterScreen from "./Register";
+import ResetPasswordScreen from "./ResetPassword";
 
 const EntryPoint: FC<{}> = () => {
   return (
@@ -17,6 +18,11 @@ const EntryPoint: FC<{}> = () => {
         path={RouteConstant.forgetPassword}
         component={ForgotPasswordScreen}
       />
+      <Route
+        path={RouteConstant.resetPassword}
+        component={ResetPasswordScreen}
+      />
+
       <Route path={RouteConstant.dashboard} component={DashboardScreen} />
     </Switch>
   );
