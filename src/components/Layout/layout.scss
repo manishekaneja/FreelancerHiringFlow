@@ -1,0 +1,9 @@
+@import "../../global.scss";
+
+.base {
+  background: $primary-light;
+}
+
+.base-layer {
+  background: linear-gradient(248deg, $primary-dark 0%, $secondary 100%);
+}
