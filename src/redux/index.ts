@@ -8,7 +8,7 @@ const store = createStore(
   applyMiddleware(
     thunk.withExtraArgument({
       endPointBase: config.baseUrl,
-    })
+    } as ExtraThunkArguments)
   )
 );
 
