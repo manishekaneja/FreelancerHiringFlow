@@ -49,7 +49,7 @@ type VerificationTokenResponse = {
   exp: number;
 };
 
-type CustomAction = {
-  type: string;
+type CustomAction<T = string> = {
+  type: T;
   payload: unknown;
 };

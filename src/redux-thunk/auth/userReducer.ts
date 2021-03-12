@@ -13,15 +13,33 @@ const InitialState$user: ReducerStateType$user = {
   token: "",
 };
 
+type actionKeys$user = "set-user" | "reset-user";
+
 function reducer$user(
   state = InitialState$user,
-  { type, payload }: CustomAction
+  { type, payload }: CustomAction<actionKeys$user>
 ): ReducerStateType$user {
-  console.log(payload);
   switch (type) {
+    case "reset-user":
+      return { ...InitialState$user };
+    case "set-user":
+      return {
+        ...state,
+        ...(payload as User),
+      };
     default:
       return state;
   }
 }
 
-export { reducer$user };
+const setUser: (user: User) => CustomAction<actionKeys$user> = (user) => ({
+  type: "set-user",
+  payload: user,
+});
+
+const resetUser: () => CustomAction<actionKeys$user> = () => ({
+  type: "reset-user",
+  payload: null,
+});
+
+export { reducer$user, setUser, resetUser };
