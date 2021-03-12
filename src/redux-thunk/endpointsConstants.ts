@@ -36,8 +36,8 @@ export const EndpointConstants: {
     getAvailableJobs: "/candidates/jobs/applied",
   },
   recruiters: {
-    getCandidates: "/recruiters/jobs",
-    postedJobs:
-      "/recruiters/jobs/5452304b-82f8-4095-822b-f41136a0955d/candidates",
+    postedJobs: "/recruiters/jobs",
+    getCandidates:
+      "/recruiters/jobs",
   },
 };

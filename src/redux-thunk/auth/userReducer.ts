@@ -1,6 +1,4 @@
-import { CustomAction, User } from "../type";
-
-type ReducerStateType$user = User;
+import { CustomAction } from "../type";
 
 const InitialState$user: ReducerStateType$user = {
   createdAt: "",

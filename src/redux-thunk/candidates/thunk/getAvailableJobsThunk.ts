@@ -1,12 +1,20 @@
 import Axios, { AxiosResponse } from "axios";
 import { EndpointConstants } from "../../endpointsConstants";
-import { ApiResponse, CustomThunk, User } from "../../type";
+import { ApiResponse, CustomThunk } from "../../type";
 
-function getJobDetailsThunk({ jobId }: { jobId: string }): CustomThunk<any> {
+function getAvailableJobsThunk(): CustomThunk<any> {
   return async (dispatchThunk, getStates, { endPointBase }) => {
     const { data } = await Axios.get<
       unknown,
-      AxiosResponse<ApiResponse<User>>
+      AxiosResponse<
+        ApiResponse<{
+          data: Job[];
+          metadata: {
+            count: number;
+            limit: number;
+          };
+        }>
+      >
     >(`${endPointBase}${EndpointConstants.candidates.getAvailableJobs}/`);
     if (!data.success) {
       throw new Error(data.message);
@@ -14,4 +22,4 @@ function getJobDetailsThunk({ jobId }: { jobId: string }): CustomThunk<any> {
     return data;
   };
 }
-export default getJobDetailsThunk;
+export default getAvailableJobsThunk;

@@ -20,26 +20,6 @@ type ApiResponse<T> = {
   success: boolean;
 };
 
-type BasicInfo = {
-  id: string;
-  updatedAt: string;
-  createdAt: string;
-};
-
-type User = {
-  email: string;
-  userRole: number;
-  name: string;
-  skills: string;
-  token?: string;
-} & BasicInfo;
-
-type Job = {
-  title: string;
-  description: string;
-  location: string;
-} & BasicInfo;
-
 type UnverifiedUser = Pick<User, "email" | "token"> &
   BasicInfo & { valid: boolean };
 

@@ -4,7 +4,9 @@ type RouteKeys =
   | "login"
   | "register"
   | "forgetPassword"
-  | "resetPassword";
+  | "resetPassword"
+  | "postAJob"
+  | "appliedJobs";
 const RouteConstant: Record<RouteKeys, string> = {
   home: "/",
   dashboard: "/dashboard",
@@ -12,6 +14,8 @@ const RouteConstant: Record<RouteKeys, string> = {
   register: "/register",
   forgetPassword: "/forget-password",
   resetPassword: "/reset-password",
+  postAJob: "/post-a-job",
+  appliedJobs: "/applied-jobs",
 };
 
 export default RouteConstant;

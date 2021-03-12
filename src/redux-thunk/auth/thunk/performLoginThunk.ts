@@ -1,6 +1,11 @@
 import Axios, { AxiosResponse } from "axios";
+import {
+  setLoggedInState,
+  setRole,
+} from "../../applicationState/applicationState";
 import { EndpointConstants } from "../../endpointsConstants";
-import { ApiResponse, CustomThunk, User } from "../../type";
+import { ApiResponse, CustomThunk } from "../../type";
+import { setUser } from "../userReducer";
 
 function performLoginThunk({
   email,
@@ -17,10 +22,23 @@ function performLoginThunk({
         password,
       }
     );
-    if (!data.success && data.data) {
+    if (!data.success || !data.data) {
       throw new Error(data.message);
     }
-    return { ...data.data } as User;
+    await Promise.all([
+      dispatchThunk(setUser(data.data)),
+      dispatchThunk(setLoggedInState(true)),
+      dispatchThunk(
+        setRole(
+          data.data.userRole === 1
+            ? "candidate"
+            : data.data.userRole === 0
+            ? "recruiter"
+            : null
+        )
+      ),
+    ]);
+    return data.data;
   };
 }
 export default performLoginThunk;

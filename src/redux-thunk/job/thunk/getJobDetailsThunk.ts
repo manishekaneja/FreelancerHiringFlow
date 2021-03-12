@@ -1,6 +1,6 @@
 import Axios, { AxiosResponse } from "axios";
 import { EndpointConstants } from "../../endpointsConstants";
-import { ApiResponse, CustomThunk, User } from "../../type";
+import { ApiResponse, CustomThunk } from "../../type";
 
 function getJobDetailsThunk({ jobID }: { jobID?: string }): CustomThunk<any> {
   return async (dispatchThunk, getStates, { endPointBase }) => {

@@ -1,9 +1,4 @@
-import { CustomAction, Job } from "../type";
-
-type ReducerStateType$job = {
-  jobList: Job[];
-  selectedJob: Job | null;
-};
+import { CustomAction } from "../type";
 
 const InitialState$job: ReducerStateType$job = {
   jobList: [],

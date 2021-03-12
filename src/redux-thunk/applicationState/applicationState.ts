@@ -1,9 +1,5 @@
 import { CustomAction } from "../type";
 
-type ReducerStateType$state = {
-  isLoggedIn: boolean;
-  role: "candidate" | "recruiter" | null;
-};
 
 const InitialState$state: ReducerStateType$state = {
   isLoggedIn: false,

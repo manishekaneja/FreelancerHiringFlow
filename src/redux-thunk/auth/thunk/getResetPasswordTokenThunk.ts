@@ -1,6 +1,6 @@
 import Axios, { AxiosResponse } from "axios";
 import { EndpointConstants } from "../../endpointsConstants";
-import { ApiResponse, CustomThunk, User } from "../../type";
+import { ApiResponse, CustomThunk } from "../../type";
 
 function getResetPasswordTokenThunk({ email }: { email: string }): CustomThunk<any> {
   return async (dispatchThunk, getStates, { endPointBase }) => {

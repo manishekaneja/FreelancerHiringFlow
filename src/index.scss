@@ -12,6 +12,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+*{
+  box-sizing: border-box;
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
@@ -33,9 +36,18 @@ code {
 .inset-button {
   background: $secondary-light;
   border: 1px solid $primary;
-  @apply h-full m-0 py-2 px-5 rounded-lg text-white font-bold;
+  @apply h-auto m-0 py-2 px-4 rounded-lg text-white font-bold;
 }
 
 button{
   @apply focus:outline-none outline-none;
 }
+
+.light-highlighted-button{
+ background-color: $primary-light; 
+ color: #303F60;
+ padding:  9px 15px;
+ font-size: 12px;
+ @apply rounded-md;
+}
+
