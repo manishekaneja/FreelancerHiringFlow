@@ -1,23 +1,31 @@
 import Axios, { AxiosResponse } from "axios";
 import { EndpointConstants } from "../../endpointsConstants";
 import { ApiResponse, CustomThunk } from "../../type";
+import { setAppliedCandiatedList } from "../recruiterReducer";
 
 function getSingleJobCandidateThunk({
   jobId,
 }: {
   jobId: string;
-}): CustomThunk<any> {
+}): CustomThunk<User[]> {
   return async (dispatchThunk, getStates, { endPointBase }) => {
+    const { token } = getStates().user;
     const { data } = await Axios.get<
       unknown,
-      AxiosResponse<ApiResponse<unknown>>
+      AxiosResponse<ApiResponse<User[]>>
     >(
-      `${endPointBase}${EndpointConstants.recruiters.getCandidates}/${jobId}/candidates`
+      `${endPointBase}${EndpointConstants.recruiters.getCandidates}/${jobId}/candidates`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
     );
-    if (!data.success) {
+    if (!data.success || !data.data) {
       throw new Error(data.message);
     }
-    return data;
+    dispatchThunk(setAppliedCandiatedList(data.data));
+    return data.data;
   };
 }
 export default getSingleJobCandidateThunk;

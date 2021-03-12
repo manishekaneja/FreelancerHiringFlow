@@ -34,6 +34,8 @@ type ReducerStateType$state = {
 
 type ReducerStateType$recuiter = {
   postedJobs: Array<Job & BasicInfo>;
+  selectedJobId: string;
+  candiatesForSelectedJob: User[];
 };
 
 type ReducerStateType$candidate = {

@@ -2,9 +2,15 @@ import { CustomAction } from "../type";
 
 const InitialState$recuiter: ReducerStateType$recuiter = {
   postedJobs: [],
+  candiatesForSelectedJob: [],
+  selectedJobId: "",
 };
 
-type actionKeys$recuiter = "add-new-posted-job" | "set-posted-job-list";
+type actionKeys$recuiter =
+  | "add-new-posted-job"
+  | "set-posted-job-list"
+  | "set-candidate-list"
+  | "set-selected-job-id";
 
 function reducer$recuiter(
   state = InitialState$recuiter,
@@ -20,6 +26,16 @@ function reducer$recuiter(
       return {
         ...state,
         postedJobs: [...(payload as Job[])],
+      };
+    case "set-candidate-list":
+      return {
+        ...state,
+        candiatesForSelectedJob: payload as User[],
+      };
+    case "set-selected-job-id":
+      return {
+        ...state,
+        selectedJobId: payload as string,
       };
     default:
       return state;
@@ -40,4 +56,11 @@ const setPostedJobList: (
   payload: joblist,
 });
 
-export { reducer$recuiter, addNewPostedJob, setPostedJobList };
+const setAppliedCandiatedList: (
+  userlist: User[]
+) => CustomAction<actionKeys$recuiter> = (userlist) => ({
+  type: "set-candidate-list",
+  payload: userlist,
+});
+
+export { reducer$recuiter, addNewPostedJob, setPostedJobList,setAppliedCandiatedList };

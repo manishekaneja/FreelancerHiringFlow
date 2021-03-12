@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { useSelector } from "react-redux";
 import { NavLink, useHistory, useLocation } from "react-router-dom";
 import RouteConstant from "../../utils/RouteConstant";
+import { Avatar } from "../Avatar";
 import "./header.scss";
 
 const Header: FC<HeaderProps> = () => {
@@ -47,9 +48,7 @@ const Header: FC<HeaderProps> = () => {
             )}
 
             <div className="flex items-center">
-              <button className="mx-2 uppercase bg-blue-300 focus:outline-none rounded-full w-12 h-12 flex items-center justify-center">
-                {name[0]}
-              </button>
+              <Avatar str={name} />
               <div
                 className="border-8 border-transparent mt-3"
                 style={{ borderTopColor: "white" }}
