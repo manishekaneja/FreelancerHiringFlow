@@ -55,3 +55,11 @@ type RootState = {
 type ExtraThunkArguments = {
   endPointBase: string;
 };
+
+type InputObject = {
+  value: string;
+  validator: (value: string) => string;
+  isValid: boolean;
+  isTouched: boolean;
+  errorMessage: string;
+};

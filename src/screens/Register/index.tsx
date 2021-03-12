@@ -1,19 +1,54 @@
-import { ChangeEvent, FC, useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { Action } from "redux";
 import { ThunkDispatch } from "redux-thunk";
+import Input from "../../components/Input";
 import Layout from "../../components/Layout";
+import { Title } from "../../components/Title";
 import performRegsiterationThunk from "../../redux-thunk/auth/thunk/performRegsiterationThunk";
 import RouteConstant from "../../utils/RouteConstant";
+import validator from "validator";
 
 const RegisterScreen = () => {
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<InputObject>({
+    value: "",
+    errorMessage: "",
+    isTouched: false,
+    isValid: true,
+    validator: (value: string) =>
+      validator.isEmail(value) ? "" : "Please enter a valid email",
+  });
+  const [name, setName] = useState<InputObject>({
+    value: "",
+    errorMessage: "",
+    isTouched: false,
+    isValid: true,
+    validator: (value: string) => (value.length > 0 ? "" : "Is mandatory"),
+  });
+  const [password, setPassword] = useState<InputObject>({
+    value: "",
+    errorMessage: "",
+    isTouched: false,
+    isValid: true,
+    validator: (value: string) => (value.length > 0 ? "" : "Is mandatory"),
+  });
   const [role, setRole] = useState(0);
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [skills, setSkills] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState<InputObject>({
+    value: "",
+    errorMessage: "",
+    isTouched: false,
+    isValid: true,
+    validator: (value: string) =>
+      value.length > 0 ? "" : "Must be Same as Password",
+  });
+  const [skills, setSkills] = useState<InputObject>({
+    value: "",
+    errorMessage: "",
+    isTouched: false,
+    isValid: true,
+    validator: (value: string) => (value.length > 0 ? "" : "Is mandatory"),
+  });
 
   const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
@@ -22,27 +57,56 @@ const RegisterScreen = () => {
     ThunkDispatch<RootState, ExtraThunkArguments, Action<any>>
   >();
 
+  const propsToPass = useCallback(
+    (
+      input: InputObject,
+      setter: React.Dispatch<React.SetStateAction<InputObject>>
+    ) => ({
+      value: input.value,
+      onChange: (value: string) => {
+        const errorMessage = input.validator(value);
+        setter((ps) => ({
+          ...ps,
+          value,
+          errorMessage: errorMessage,
+          isValid: !!errorMessage,
+          isTouched: true,
+        }));
+      },
+      isTouched: input.isTouched,
+      isValid: input.isValid,
+      errorMessage: input.errorMessage,
+    }),
+    []
+  );
   return (
     <Layout>
       <div className="w-full h-full flex justify-center items-center">
-        <div className="max-w-xl w-full rounded-2xl p-8 bg-white popup">
+        <div className="max-w-xl w-full rounded-2xl p-8 bg-white popup  flex flex-col items-stretch">
           {isLoading ? (
             <p>Loading</p>
           ) : (
             <>
-              <SubTitle title="Signup" />
-              <div className="my-3.5" />
+              <Title title="Signup" />
               <div className="py-3 w-full">
                 <label>
                   <p className="m-0 p-0 text-sm secondary">I'm a*</p>
                   <button
-                    className={role === 0 ? "primary-button" : ""}
+                    className={
+                      role === 0
+                        ? "primary-button mr-5 w-40"
+                        : "mr-5 border-blue-300 border-2 w-40  rounded-md p-3 bg-blue-100 secondary"
+                    }
                     onClick={setRole.bind({}, 0)}
                   >
                     Recruiter
                   </button>
                   <button
-                    className={role === 1 ? "primary-button" : ""}
+                    className={
+                      role === 1
+                        ? "primary-button mr-5 w-40"
+                        : "mr-5 border-blue-300 border-2 w-40  rounded-md p-3 bg-blue-100 secondary"
+                    }
                     onClick={setRole.bind({}, 1)}
                   >
                     Candidate
@@ -51,73 +115,87 @@ const RegisterScreen = () => {
               </div>
               <Input
                 label="Full Name*"
-                value={name}
-                onChange={setName}
+                {...propsToPass(name, setName)}
                 placeholder="Enter your full name"
                 type="text"
               />
               <Input
                 label="Email Address*"
-                value={email}
-                onChange={setEmail}
+                {...propsToPass(email, setEmail)}
                 placeholder="Enter your email"
                 type="text"
               />
               <div className="flex justify-between items-stretch">
                 <Input
                   label="Password*"
-                  value={password}
-                  onChange={setPassword}
+                  {...propsToPass(password, setPassword)}
                   placeholder="Enter your email"
-                  type="text"
+                  type="password"
                 />
                 <Input
                   label="Confirm Password*"
-                  value={confirmPassword}
-                  onChange={setConfirmPassword}
+                  {...propsToPass(confirmPassword, setConfirmPassword)}
                   placeholder="Enter your email"
-                  type="text"
+                  type="password"
                 />
               </div>
               <Input
                 label="Skills*"
-                value={skills}
-                onChange={setSkills}
+                {...propsToPass(skills, setSkills)}
                 placeholder="Enter comma separated skills"
                 type="text"
               />
-
-              <button
-                className="primary-button"
-                onClick={() => {
-                  dispatch(
-                    performRegsiterationThunk({
-                      confirmPassword: confirmPassword,
-                      email: email,
-                      name: name,
-                      password: password,
-                      skills: skills,
-                      userRole: role,
-                    })
-                  )
-                    .then((data) => {
-                      console.log({ data });
-                      history.push(RouteConstant.dashboard);
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                      setIsLoading(false);
-                    });
-                }}
-              >
-                Signup
-              </button>
-              <p>
-                Have an account?
-                <Link to={RouteConstant.login} className="primary">
-                  Login
-                </Link>
-              </p>
+              <div className="flex flex-col items-center justify-center">
+                <button
+                  className="primary-button"
+                  onClick={() => {
+                    if (
+                      !email.validator(email.value) &&
+                      !name.validator(name.value) &&
+                      !confirmPassword.validator(confirmPassword.value) &&
+                      !password.validator(password.value) &&
+                      !skills.validator(skills.value) &&
+                      (role === 0 || role === 1) &&
+                      password.value === confirmPassword.value
+                    ) {
+                      dispatch(
+                        performRegsiterationThunk({
+                          confirmPassword: confirmPassword.value,
+                          email: email.value,
+                          name: name.value,
+                          password: password.value,
+                          skills: skills.value,
+                          userRole: role,
+                        })
+                      )
+                        .then((data) => {
+                          history.push(RouteConstant.dashboard);
+                        })
+                        .catch((err) => {
+                          alert(err.message);
+                          setIsLoading(false);
+                        });
+                    } else {
+                      if (confirmPassword.value !== password.value) {
+                        setConfirmPassword((ps) => ({
+                          ...ps,
+                          errorMessage: "Must be same as Password ",
+                          isTouched: true,
+                          isValid: false,
+                        }));
+                      }
+                    }
+                  }}
+                >
+                  Signup
+                </button>
+                <p className="my-3">
+                  Have an account?
+                  <Link to={RouteConstant.login} className="primary">
+                    Login
+                  </Link>
+                </p>
+              </div>
             </>
           )}
         </div>
@@ -127,34 +205,3 @@ const RegisterScreen = () => {
 };
 
 export default RegisterScreen;
-
-const SubTitle: FC<{ title: string }> = ({ title }) => (
-  <h4 className="capitalize secondary font-semibold text-2xl">{title}</h4>
-);
-
-const Input: FC<{
-  value: string;
-  type: "text" | "number";
-  onChange: (value: string) => void;
-  placeholder: string;
-  label: string;
-}> = ({ value, onChange, label, placeholder, type }) => {
-  return (
-    <div className="py-3 w-full">
-      <label>
-        <p className="m-0 p-0 text-sm secondary">{label}</p>
-        <input
-          style={{ borderWidth: 1 }}
-          className="border-gray-400 rounded-sm w-full focus:border-blue-400 p-1 border-solid focus:outline-none"
-          {...{
-            value,
-            type,
-            placeholder,
-            onChange: (event: ChangeEvent<HTMLInputElement>) =>
-              onChange(event.target.value),
-          }}
-        />
-      </label>
-    </div>
-  );
-};

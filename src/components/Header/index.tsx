@@ -1,6 +1,8 @@
 import React, { FC } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useHistory, useLocation } from "react-router-dom";
+import { setLoggedInState } from "../../redux-thunk/applicationState/applicationState";
+import { resetUser } from "../../redux-thunk/auth/userReducer";
 import RouteConstant from "../../utils/RouteConstant";
 import { Avatar } from "../Avatar";
 import "./header.scss";
@@ -8,6 +10,7 @@ import "./header.scss";
 const Header: FC<HeaderProps> = () => {
   const history = useHistory();
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
   const inAuthScreen =
     pathname === RouteConstant.login ||
     pathname === RouteConstant.register ||
@@ -47,13 +50,20 @@ const Header: FC<HeaderProps> = () => {
               </NavLink>
             )}
 
-            <div className="flex items-center">
+            <button
+              onClick={() => {
+                dispatch(resetUser());
+                dispatch(setLoggedInState(false));
+                history.push(RouteConstant.login);
+              }}
+              className="flex items-center"
+            >
               <Avatar str={name} />
               <div
                 className="border-8 border-transparent mt-3"
                 style={{ borderTopColor: "white" }}
               />
-            </div>
+            </button>
           </div>
         ) : (
           !inAuthScreen && (

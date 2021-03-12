@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from "react";
+import _ from "lodash";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router";
 import { Action } from "redux";
@@ -7,12 +8,11 @@ import Breadcrumb from "../../components/Breadcrumb";
 import { JobCard } from "../../components/JobCard";
 import Layout from "../../components/Layout";
 import { Title } from "../../components/Title";
+import UserCard from "../../components/UserCard";
+import applyForJobThunk from "../../redux-thunk/candidates/thunk/applyForJobThunk";
 import getAvailableJobsThunk from "../../redux-thunk/candidates/thunk/getAvailableJobsThunk";
 import getPostedJobsThunk from "../../redux-thunk/recruiters/thunk/getPostedJobsThunk";
 import getSingleJobCandidateThunk from "../../redux-thunk/recruiters/thunk/getSingleJobCandidateThunk";
-import _ from "lodash";
-import applyForJobThunk from "../../redux-thunk/candidates/thunk/applyForJobThunk";
-import { Avatar } from "../../components/Avatar";
 const DashboardScreen = () => {
   const { isLoggedIn, role } = useSelector(
     (state: RootState) => state.appState
@@ -22,7 +22,7 @@ const DashboardScreen = () => {
   );
   const { availableJobs } = useSelector((state: RootState) => state.candidate);
 
-  const [isloading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const dispatch = useDispatch<
     ThunkDispatch<RootState, ExtraThunkArguments, Action<any>>
   >();
@@ -31,22 +31,11 @@ const DashboardScreen = () => {
   useEffect(() => {
     setIsLoading(true);
     if (role === "recruiter") {
-      dispatch(getPostedJobsThunk())
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((err) => console.log(err));
+      dispatch(getPostedJobsThunk()).catch((err) => alert(err.message));
     } else if (role === "candidate") {
-      dispatch(getAvailableJobsThunk())
-        .then((data) => {
-          console.log({ data });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      dispatch(getAvailableJobsThunk()).catch((err) => alert(err.message));
     }
   }, [dispatch, role]);
-
   if (!role || !isLoggedIn) {
     return <Redirect to="/" />;
   }
@@ -59,7 +48,13 @@ const DashboardScreen = () => {
         {postedJobs.length > 0 ? (
           <div className="grid grid-flow-row grid-cols-4 grid-rows-3 gap-10 place-items-stretch items-stretch ">
             {_.map(
-              _.take([...postedJobs, ...postedJobs, ...postedJobs], 12),
+              [
+                ...postedJobs,
+                ...postedJobs,
+                ...postedJobs,
+                ...postedJobs,
+                ...postedJobs,
+              ],
               (job, idx) => (
                 <JobCard
                   role="recruiter"
@@ -71,13 +66,7 @@ const DashboardScreen = () => {
                       getSingleJobCandidateThunk({
                         jobId: id,
                       })
-                    )
-                      .then((data) => {
-                        console.log(data);
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                      });
+                    ).catch((err) => alert(err.message));
                   }}
                 />
               )
@@ -124,13 +113,7 @@ const DashboardScreen = () => {
                       applyForJobThunk({
                         jobId: id,
                       })
-                    )
-                      .then((data) => {
-                        console.log(data);
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                      });
+                    ).catch((err) => alert(err.message));
                   }}
                 />
               ))}
@@ -142,25 +125,7 @@ const DashboardScreen = () => {
       </>
     );
   }
-  return null;
+  return <p>OOPS</p>;
 };
 
-const UserCard: FC<{ data: User }> = ({ data: { name, email, skills } }) => (
-  <div
-    className="bg-white rounded-md p-3"
-    style={{ borderColor: "#303F6080", borderWidth: 1 }}
-  >
-    <div className="flex flex-row mb-6">
-      <div>
-        <Avatar str={name} />
-      </div>
-      <div className="flex-1 flex flex-col items-stretch justify-start">
-        <p className="flex-1 secondary font-bold">{name}</p>
-        <p className="flex-1 w-full secondary ">{email}</p>
-      </div>
-    </div>
-    <p className="p-0 m-0 secondary font-semibold text-xs">Skills</p>
-    <p className="p-0 m-0 secondary pb-4 text-sm ">{skills}</p>
-  </div>
-);
 export default DashboardScreen;

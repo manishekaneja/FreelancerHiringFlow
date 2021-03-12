@@ -26,7 +26,7 @@ const AppliedJobScreen = () => {
           setIsLoading(false);
         })
         .catch((err) => {
-          console.log({ err });
+          alert(err.message)
           setIsLoading(false);
         });
     }

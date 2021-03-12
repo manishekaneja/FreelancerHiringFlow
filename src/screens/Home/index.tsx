@@ -1,6 +1,7 @@
-import { FC } from "react";
 import girlImage from "../../assets/images/girl-using-laptop.png";
 import Layout from "../../components/Layout";
+import { Title } from "../../components/Title";
+import { WhiteCard } from "../../components/WhiteCard";
 const HomeScreen = () => {
   return (
     <Layout>
@@ -23,7 +24,7 @@ const HomeScreen = () => {
         </section>
         <section className="mb-12">
           <div>
-            <SubTitle title="why us" />
+            <Title title="why us" />
           </div>
           <div className="flex flex-row flex-wrap justify-between">
             {([
@@ -51,7 +52,7 @@ const HomeScreen = () => {
         </section>
         <section>
           <div>
-            <SubTitle title="companies who trust us" />
+            <Title title="companies who trust us" />
           </div>
           <div></div>
         </section>
@@ -61,17 +62,3 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
-
-const WhiteCard: FC<{ title: string; content: string }> = ({
-  title,
-  content,
-}) => (
-  <div className="rounded-md px-5 shadow-lg bg-white my-5 max-w-xs">
-    <h3 className="primary text-2xl font-medium my-4">{title}</h3>
-    <p className="p-0 m-0 secondary pb-7 text-sm">{content}</p>
-  </div>
-);
-
-const SubTitle: FC<{ title: string }> = ({ title }) => (
-  <h4 className="capitalize secondary font-semibold text-2xl">{title}</h4>
-);

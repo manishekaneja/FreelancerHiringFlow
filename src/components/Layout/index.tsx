@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import Header from "../Header";
 import "./layout.scss";
 
-const Layout: FC<LayoutProps> = ({ children, className = "",high=true }) => {
+const Layout: FC<LayoutProps> = ({ children, high=true }) => {
   return (
     <div className="min-h-screen w-screen relative p-0 base z-0">
       <div className="w-screen base-layer absolute left-0 top-0 z-0 shadow-sm" style={{height:high?"46%":210}}></div>

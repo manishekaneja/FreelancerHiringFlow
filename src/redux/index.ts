@@ -13,7 +13,7 @@ const store = createStore(
 );
 
 store.subscribe(() => {
-  console.log(JSON.stringify(store.getState(), null, 2));
+  // console.log(JSON.stringify(store.getState(), null, 2));
 });
 
 export default store;
