@@ -1,7 +1,7 @@
 type LayoutProps = {
   children: React.ReactNode;
   className?:string;
-  stretch?:boolean;
+  high?:boolean;
 };
 
 type HeaderProps = {

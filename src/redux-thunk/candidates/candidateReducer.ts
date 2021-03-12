@@ -2,14 +2,16 @@ import { CustomAction } from "../type";
 
 const InitialState$candidate: ReducerStateType$candidate = {
   availableJobs: [],
+  appliedJobs: [],
 };
 
 type actionKeys$candidate =
   | "set-job-list"
+  | "set-applied-job-list"
   | "add-new-in-job-list"
   | "clear-job-list";
 
-function reducer$job(
+function reducer$candidate(
   state = InitialState$candidate,
   { type, payload }: CustomAction<actionKeys$candidate>
 ): ReducerStateType$candidate {
@@ -28,6 +30,11 @@ function reducer$job(
       return {
         ...state,
         availableJobs: [],
+      };
+    case "set-applied-job-list":
+      return {
+        ...state,
+        appliedJobs: payload as Job[],
       };
     default:
       return state;
@@ -53,9 +60,19 @@ const clearAvailableJobList: () => CustomAction<actionKeys$candidate> = () => ({
   payload: null,
 });
 
+const setAppliedAvailableJobList: (
+  joblist: Job[]
+) => CustomAction<actionKeys$candidate> = (joblist) => ({
+  type: "set-applied-job-list",
+  payload: joblist,
+});
+
+
+
 export {
-  reducer$job,
+  reducer$candidate,
   setAvailableJobList,
   addNewAvailableJobsInList,
   clearAvailableJobList,
+  setAppliedAvailableJobList
 };

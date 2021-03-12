@@ -5,7 +5,7 @@ import RouteConstant from "../../utils/RouteConstant";
 const Breadcrumb = () => {
   const { pathname } = useLocation();
   return (
-    <div className="flex flex-row text-white text-xs font-normal my-4 ">
+    <div className="flex flex-row text-white text-xs font-normal py-4 ">
       <Link to={RouteConstant.dashboard} className="mr-2 hover:underline">
         Home
       </Link>

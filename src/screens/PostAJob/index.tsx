@@ -39,10 +39,10 @@ const PostAJobScreen = () => {
   }, [dispatch, description, title, history, location]);
   return (
     <Layout>
-      <div className="w-full">
+      <div className="h-full w-full flex flex-col items-stretch justify-center">
         <Breadcrumb />
-        <div className="flex py-60 justify-center items-center">
-          <div className="max-w-xl w-full rounded-2xl p-8 bg-white ">
+        <div className="flex justify-center items-center flex-1">
+          <div className="max-w-xl w-full rounded-2xl p-8 bg-white popup">
             {isLoading ? (
               <p>Loading</p>
             ) : (

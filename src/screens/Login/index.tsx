@@ -36,7 +36,7 @@ const LoginScreen = () => {
   return (
     <Layout>
       <div className="w-full flex py-60 justify-center items-center">
-        <div className="max-w-xl w-full rounded-2xl p-8 bg-white ">
+        <div className="max-w-xl w-full rounded-2xl p-8 bg-white popup ">
           {isLoading ? (
             <p>Loading</p>
           ) : (

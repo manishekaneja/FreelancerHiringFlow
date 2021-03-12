@@ -31,9 +31,9 @@ export const EndpointConstants: {
     fetchOne: "/jobs",
   },
   candidates: {
-    alreadyAppliedJobs: "/candidates/jobs",
+    alreadyAppliedJobs: "/candidates/jobs/applied",
     apply: "/candidates/jobs",
-    getAvailableJobs: "/candidates/jobs/applied",
+    getAvailableJobs: "//candidates/jobs",
   },
   recruiters: {
     postedJobs: "/recruiters/jobs",

@@ -7,13 +7,13 @@ import Breadcrumb from "../../components/Breadcrumb";
 import { JobCard } from "../../components/JobCard";
 import Layout from "../../components/Layout";
 import { Title } from "../../components/Title";
-import getAvailableJobsThunk from "../../redux-thunk/candidates/thunk/getAvailableJobsThunk";
+import alreadyAppliedJobsThunk from "../../redux-thunk/candidates/thunk/alreadyAppliedJobsThunk";
 
 const AppliedJobScreen = () => {
   const { isLoggedIn, role } = useSelector(
     (state: RootState) => state.appState
   );
-  const { postedJobs } = useSelector((state: RootState) => state.recuiter);
+  const { appliedJobs } = useSelector((state: RootState) => state.candidate);
   const [isloading, setIsLoading] = useState(false);
   const dispatch = useDispatch<
     ThunkDispatch<RootState, ExtraThunkArguments, Action<any>>
@@ -21,9 +21,8 @@ const AppliedJobScreen = () => {
   useEffect(() => {
     setIsLoading(true);
     if (role === "candidate") {
-      dispatch(getAvailableJobsThunk())
+      dispatch(alreadyAppliedJobsThunk())
         .then((data) => {
-          console.log({ data });
           setIsLoading(false);
         })
         .catch((err) => {
@@ -42,14 +41,14 @@ const AppliedJobScreen = () => {
         <Title type="light" title="Jobs posted by you" />
         {isloading ? (
           <Title type="dark" title="Loading..." />
-        ) : postedJobs.length > 0 ? (
-          <div className="flex flex-wrap">
-            {postedJobs.map((job, idx) => (
+        ) : appliedJobs.length > 0 ? (
+          <div className="grid grid-flow-row grid-cols-4 grid-rows-3 gap-10 place-items-stretch items-stretch ">
+            {appliedJobs.map((job, idx) => (
               <JobCard role="candidate" key={idx} data={job} />
             ))}
           </div>
         ) : (
-          <Title type="dark" title="No Posted Jobs" />
+          <Title type="light" title="No Posted Jobs" />
         )}
       </Layout>
     );

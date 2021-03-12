@@ -38,6 +38,7 @@ type ReducerStateType$recuiter = {
 
 type ReducerStateType$candidate = {
   availableJobs: Array<Job & BasicInfo>;
+  appliedJobs: Array<Job & BasicInfo>;
 };
 
 // Root Reducer Type
@@ -46,6 +47,7 @@ type RootState = {
   user: ReducerStateType$user;
   job: ReducerStateType$job;
   recuiter: ReducerStateType$recuiter;
+  candidate: ReducerStateType$candidate;
 };
 
 type ExtraThunkArguments = {

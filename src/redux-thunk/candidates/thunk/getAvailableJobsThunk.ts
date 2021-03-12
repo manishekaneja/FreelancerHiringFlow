@@ -1,24 +1,26 @@
 import Axios, { AxiosResponse } from "axios";
 import { EndpointConstants } from "../../endpointsConstants";
 import { ApiResponse, CustomThunk } from "../../type";
+import { setAvailableJobList } from "../candidateReducer";
 
 function getAvailableJobsThunk(): CustomThunk<any> {
   return async (dispatchThunk, getStates, { endPointBase }) => {
+    const { token } = getStates().user;
     const { data } = await Axios.get<
       unknown,
       AxiosResponse<
-        ApiResponse<{
-          data: Job[];
-          metadata: {
-            count: number;
-            limit: number;
-          };
-        }>
+        ApiResponse<Job[]>
       >
-    >(`${endPointBase}${EndpointConstants.candidates.getAvailableJobs}/`);
-    if (!data.success) {
+    >(`${endPointBase}${EndpointConstants.candidates.getAvailableJobs}/`,{
+      headers: {
+        Authorization: token,
+      },
+
+    });
+    if (!data.success || !data.data) {
       throw new Error(data.message);
     }
+    dispatchThunk(setAvailableJobList(data.data))
     return data;
   };
 }

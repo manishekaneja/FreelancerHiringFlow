@@ -17,10 +17,10 @@ const JobCard: FC<{
     <div className="flex flex-row items-center justify-start">
       <p className="p-0 m-0 secondary  text-sm flex-1 font-normal">{location}</p>
       {role === "recruiter" && onClick && id && (
-        <button onClick={onClick.bind({}, id)} className="secondary light-highlighted-button">View Application</button>
+        <button onClick={onClick.bind({}, id)} className="light-highlighted-button">View Application</button>
       )}
       {role === "candidate" && onClick && id && (
-        <button onClick={onClick.bind({}, id)} className="secondary light-highlighted-button">Apply</button>
+        <button onClick={onClick.bind({}, id)} className="light-highlighted-button">Apply</button>
       )}
     </div>
   </div>

@@ -11,11 +11,13 @@ import getAvailableJobsThunk from "../../redux-thunk/candidates/thunk/getAvailab
 import getPostedJobsThunk from "../../redux-thunk/recruiters/thunk/getPostedJobsThunk";
 import getSingleJobCandidateThunk from "../../redux-thunk/recruiters/thunk/getSingleJobCandidateThunk";
 import _ from "lodash";
+import applyForJobThunk from "../../redux-thunk/candidates/thunk/applyForJobThunk";
 const DashboardScreen = () => {
   const { isLoggedIn, role } = useSelector(
     (state: RootState) => state.appState
   );
   const { postedJobs } = useSelector((state: RootState) => state.recuiter);
+  const { availableJobs } = useSelector((state: RootState) => state.candidate);
 
   const [isloading, setIsLoading] = useState(false);
   const dispatch = useDispatch<
@@ -47,7 +49,7 @@ const DashboardScreen = () => {
   }
   if (role === "recruiter") {
     return (
-      <Layout stretch={false}>
+      <Layout high={false}>
         <Breadcrumb />
         <Title type="light" title="Jobs posted by you" />
 
@@ -98,11 +100,40 @@ const DashboardScreen = () => {
     return (
       <>
         <Layout>
-          <p>Bread crumbs</p>
-          <h2>Jobs posted by you</h2>
-          {[1, 2, 3].map(() => (
-            <p>Card</p>
-          ))}
+          <Breadcrumb />
+          <Title type="light" title="Jobs applied by you" />
+          {availableJobs.length > 0 ? (
+            <div className="grid grid-flow-row grid-cols-4 grid-rows-3 gap-10 place-items-stretch items-stretch ">
+              {_.map(
+                _.take(
+                  availableJobs,
+                  12
+                ),
+                (job, idx) => (
+                  <JobCard
+                    role="candidate"
+                    key={idx}
+                    data={job}
+                    onClick={(id) => {
+                      dispatch(
+                        applyForJobThunk({
+                          jobId: id,
+                        })
+                      )
+                        .then((data) => {
+                          console.log(data);
+                        })
+                        .catch((err) => {
+                          console.log(err);
+                        });
+                    }}
+                  />
+                )
+              )}
+            </div>
+          ) : (
+            <Title title="No Posted Jobs" />
+          )}
         </Layout>
       </>
     );
@@ -111,19 +142,3 @@ const DashboardScreen = () => {
 };
 
 export default DashboardScreen;
-
-// const SubTitle: FC<{ title: string }> = ({ title }) => (
-//   <h4 className="capitalize text-white font-semibold text-2xl">{title}</h4>
-// );
-
-// const WhiteCard: FC<{
-//   data: Job & BasicInfo;
-//   onClick: (id: string) => void;
-// }> = ({ data: { title, description, location, id }, onClick }) => (
-//   <div className="rounded-md mr-3 w-52 px-5 shadow-lg bg-white my-5 max-w-xs">
-//     <h3 className="primary text-2xl font-medium my-4">{title}</h3>
-//     <p className="p-0 m-0 secondary pb-7 text-sm">{description}</p>
-//     <p className="p-0 m-0 secondary pb-7 text-sm">{location}</p>
-//     <button onClick={onClick.bind({}, id)}> View Application</button>
-//   </div>
-// );
